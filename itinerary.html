@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行程攻略｜沖繩旅遊</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap');
+    :root {
+      --deep-blue: #005f8a; --ocean-blue: #0077B6; --sky-blue: #00A8E8;
+      --light-blue: #ADE8F4; --pale-blue: #CAF0F8; --sand-white: #FFF9F0;
+      --sand: #F5E6D3; --white: #ffffff; --text-dark: #1a3a4a; --coral: #FF6B6B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif; color: var(--text-dark);
+      background: linear-gradient(180deg, var(--deep-blue) 0%, var(--ocean-blue) 25%, var(--sky-blue) 50%, var(--light-blue) 80%, var(--pale-blue) 100%);
+      min-height: 100vh;
+    }
+    .wave-top {
+      position: fixed; top: 0; left: 0; width: 100%; height: 80px; z-index: 999;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80'%3E%3Cpath fill='%23FFF9F0' d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,40 1440,40 L1440,0 L0,0 Z'/%3E%3C/svg%3E") no-repeat center; background-size: cover;
+    }
+    nav {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
+      display: flex; gap: 4px; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+      border-radius: 50px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.3);
+    }
+    nav a { color: var(--white); text-decoration: none; padding: 8px 18px; border-radius: 50px; font-size: 14px; font-weight: 500; transition: all 0.3s; }
+    nav a:hover, nav a.active { background: rgba(255,255,255,0.9); color: var(--deep-blue); }
+    .page-header { padding-top: 120px; padding-bottom: 60px; text-align: center; color: var(--white); position: relative; z-index: 1; }
+    .page-header h1 { font-family: 'Noto Serif TC', serif; font-size: clamp(36px,6vw,56px); margin-bottom: 12px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .page-header p { font-size: 16px; opacity: 0.85; letter-spacing: 2px; }
+    .content { background: var(--sand-white); padding: 60px 20px 80px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .day-block {
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-radius: 24px;
+      margin-bottom: 32px; overflow: hidden; border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 8px 32px rgba(0,95,138,0.08); position: relative;
+    }
+    .day-block::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg,var(--sky-blue),var(--ocean-blue),var(--deep-blue));
+    }
+    .day-header {
+      background: linear-gradient(135deg, var(--ocean-blue), var(--deep-blue));
+      color: white; padding: 20px 28px; display: flex; align-items: center; gap: 16px;
+    }
+    .day-num { font-size: 40px; font-weight: 700; opacity: 0.9; }
+    .day-info h3 { font-size: 20px; font-weight: 700; }
+    .day-info p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+    .day-body { padding: 24px 28px; }
+    .timeline { list-style: none; }
+    .timeline li {
+      display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px dashed rgba(0,119,182,0.15);
+      align-items: flex-start;
+    }
+    .timeline li:last-child { border-bottom: none; }
+    .time {
+      min-width: 60px; font-weight: 700; color: var(--ocean-blue);
+      font-size: 14px; padding-top: 2px;
+    }
+    .timeline-content { flex: 1; }
+    .timeline-content strong { display: block; color: var(--deep-blue); font-size: 16px; margin-bottom: 4px; }
+    .timeline-content span { font-size: 13px; color: #666; }
+    .timeline-content .transport {
+      display: inline-block; margin-top: 6px; font-size: 12px; color: var(--sky-blue);
+      background: rgba(0,168,232,0.1); padding: 3px 10px; border-radius: 12px;
+    }
+
+    .tips-box {
+      background: linear-gradient(135deg, rgba(0,119,182,0.08), rgba(0,95,138,0.05));
+      border: 1.5px solid rgba(0,119,182,0.2); border-radius: 16px;
+      padding: 24px; margin-top: 40px;
+    }
+    .tips-box h4 { color: var(--deep-blue); margin-bottom: 12px; font-size: 18px; }
+    .tips-box ul { list-style: none; display: grid; gap: 10px; }
+    .tips-box li { font-size: 14px; color: #555; padding-left: 20px; position: relative; line-height: 1.6; }
+    .tips-box li::before { content: '✦'; position: absolute; left: 0; color: var(--ocean-blue); }
+
+    .footer { background: var(--deep-blue); color: rgba(255,255,255,0.7); text-align: center; padding: 28px 20px; font-size: 13px; }
+    @media(max-width:768px) {
+      nav { flex-wrap: wrap; max-width: 90vw; justify-content: center; top:14px; padding:6px 10px; }
+      nav a { padding:6px 12px; font-size:12px; }
+      .day-header { flex-direction: column; text-align: center; }
+      .timeline li { flex-direction: column; gap: 4px; }
+      .time { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wave-top"></div>
+  <nav>
+    <a href="index.html">首頁</a>
+    <a href="spots.html">景點推薦</a>
+    <a href="restaurants.html">美食餐廳</a>
+    <a href="itinerary.html" class="active">行程攻略</a>
+    <a href="blog.html">遊記摘要</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>🗓️ 行程攻略</h1>
+    <p>5 DAYS 4 NIGHTS OKINAWA ITINERARY</p>
+  </div>
+
+  <div class="content">
+    <div class="container">
+
+      <div class="day-block">
+        <div class="day-header">
+          <div class="day-num">D1</div>
+          <div class="day-info">
+            <h3>抵達 + 那霸市區</h3>
+            <p>Day 1 · 抵達國際機場 → 市區觀光</p>
+          </div>
+        </div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><div class="time">14:00</div><div class="timeline-content"><strong>抵達那霸國際機場</strong><span>租車自駕 或 單軌電車進入市區</span></div></li>
+            <li><div class="time">15:30</div><div class="timeline-content"><strong>波上宮</strong><span>建於珊瑚礁斷崖上的神社，祈求平安</span></div></li>
+            <li><div class="time">17:00</div><div class="timeline-content"><strong>國際通散步</strong><span>購買伴手禮、享用晚餐</span><div class="transport">🚗 距機場約15分鐘</div></div></li>
+            <li><div class="time">19:00</div><div class="timeline-content"><strong>晚餐：傑克牛排 / 燒肉本部牧場</strong><span>國際通超人氣餐廳</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day-block">
+        <div class="day-header">
+          <div class="day-num">D2</div>
+          <div class="day-info">
+            <h3>南部文化之旅</h3>
+            <p>Day 2 · 世界遺產 + 海岸咖啡</p>
+          </div>
+        </div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><div class="time">09:00</div><div class="timeline-content"><strong>首里城公園</strong><span>琉球王國世界文化遺產，朱紅城樓</span><div class="transport">🚗 那霸市區約20分鐘</div></div></li>
+            <li><div class="time">11:00</div><div class="timeline-content"><strong>玉泉洞王国</strong><span>沖繩最大鐘乳石洞，DIY琉球玻璃</span><div class="transport">🚗 距首里城約30分鐘</div></div></li>
+            <li><div class="time">13:30</div><div class="timeline-content"><strong>午餐：Spice Studioるゥ〜</strong><span>檸檬椰奶咖哩，清爽不膩</span></div></li>
+            <li><div class="time">15:00</div><div class="timeline-content"><strong>浜辺の茶屋</strong><span>海岸線上的人氣海景咖啡</span><div class="transport">🚗 距玉泉洞約20分鐘</div></div></li>
+            <li><div class="time">17:30</div><div class="timeline-content"><strong>齋場御嶽</strong><span>琉球最神聖的祭祀場所，世界文化遺產</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day-block">
+        <div class="day-header">
+          <div class="day-num">D3</div>
+          <div class="day-info">
+            <h3>北部自然探索</h3>
+            <p>Day 3 · 水族館 + 古宇利島</p>
+          </div>
+        </div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><div class="time">08:00</div><div class="timeline-content"><strong>出發前往北部</strong><span>走高速公路北上，車程約2小時</span><div class="transport">🚗 那霸→本部町 約2小時</div></div></li>
+            <li><div class="time">10:00</div><div class="timeline-content"><strong>美ら海水族館</strong><span>黑潮之海鯨鯊群游，建議提前線上購票</span><div class="transport">🚗 建議10:00前抵達</div></div></li>
+            <li><div class="time">12:30</div><div class="timeline-content"><strong>午餐：花人逢</strong><span>邊看海邊吃披薩，北部超人氣景觀餐廳</span></div></li>
+            <li><div class="time">14:30</div><div class="timeline-content"><strong>古宇利島</strong><span>跨海大橋、戀人聖地、清澈海水</span><div class="transport">🚗 距水族館約20分鐘</div></div></li>
+            <li><div class="time">16:00</div><div class="timeline-content"><strong>今歸仁城跡</strong><span>賞櫻聖地，世界文化遺產</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day-block">
+        <div class="day-header">
+          <div class="day-num">D4</div>
+          <div class="day-info">
+            <h3>中部海岸線</h3>
+            <p>Day 4 · 恩納村 + 美國村</p>
+          </div>
+        </div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><div class="time">09:00</div><div class="timeline-content"><strong>萬座毛</strong><span>象鼻岩、夕陽剪影拍攝聖地</span><div class="transport">🚗 恩納村內</div></div></li>
+            <li><div class="time">10:30</div><div class="timeline-content"><strong>勝連城跡</strong><span>世界文化遺產，眺望大海</span><div class="transport">🚗 距萬座毛約25分鐘</div></div></li>
+            <li><div class="time">12:00</div><div class="timeline-content"><strong>午餐：燒肉本部牧場（恩納村）</strong><span>阿古豬與和牛燒肉高CP值</span></div></li>
+            <li><div class="time">14:00</div><div class="timeline-content"><strong>殘波岬公園</strong><span>白色燈塔、夕陽絕景</span><div class="transport">🚗 距燒肉店約15分鐘</div></div></li>
+            <li><div class="time">16:30</div><div class="timeline-content"><strong>美國村 / 北谷町</strong><span>異國風情購物區，夕陽海灘</span></div></li>
+            <li><div class="time">19:00</div><div class="timeline-content"><strong>晚餐：Banta Cafe</strong><span>夕陽海景第一排咖啡廳</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day-block">
+        <div class="day-header">
+          <div class="day-num">D5</div>
+          <div class="day-info">
+            <h3>回程 + 瀨長島</h3>
+            <p>Day 5 · 最後朝聖 + 返台</p>
+          </div>
+        </div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><div class="time">09:00</div><div class="timeline-content"><strong>退房出發</strong><span>往那霸市區方向前進</span></div></li>
+            <li><div class="time">10:00</div><div class="timeline-content"><strong>瀨長島</strong><span>幸福鬆餅、機場附近賞機地</span><div class="transport">🚗 距那霸機場約10分鐘</div></div></li>
+            <li><div class="time">12:00</div><div class="timeline-content"><strong>午餐：風林火山</strong><span>早上7點就開的烤魚定食，在地人推薦</span></div></li>
+            <li><div class="time">14:00</div><div class="timeline-content"><strong>還車 + 前往機場</strong><span>國際機場出境，返抵台灣</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tips-box">
+        <h4>💡 實用 Tips</h4>
+        <ul>
+          <li>租車自駕：OTS、Budget、Nissan 等，建議提前預訂，機場取車要預留2小時</li>
+          <li>右駕適應：沖繩路況良好，右駕約半天即可適應，建議有經驗者再自駕</li>
+          <li>美ら海水族館：務必提前線上購票，黑潮之海餵食秀15:00開始</li>
+          <li>4月賞鯨：慶良間群島賞鯨（4月最後產季），需提前預約</li>
+          <li>旅費參考：5天4夜約25,000台幣，租車1天約1,000~1,500台幣</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer"><p>沖繩旅遊攻略 v3 · 蔚藍海岸風設計 · 2026</p></footer>
+</body>
+</html>

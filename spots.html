@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>景點推薦｜沖繩旅遊</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap');
+    :root {
+      --deep-blue: #005f8a; --ocean-blue: #0077B6; --sky-blue: #00A8E8;
+      --light-blue: #ADE8F4; --pale-blue: #CAF0F8; --sand-white: #FFF9F0;
+      --sand: #F5E6D3; --white: #ffffff; --text-dark: #1a3a4a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, var(--deep-blue) 0%, var(--ocean-blue) 25%, var(--sky-blue) 50%, var(--light-blue) 80%, var(--pale-blue) 100%);
+      min-height: 100vh;
+    }
+    .wave-top {
+      position: fixed; top: 0; left: 0; width: 100%; height: 80px; z-index: 999;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80'%3E%3Cpath fill='%23FFF9F0' d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,40 1440,40 L1440,0 L0,0 Z'/%3E%3C/svg%3E") no-repeat center; background-size: cover;
+    }
+    nav {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
+      display: flex; gap: 4px; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+      border-radius: 50px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.3);
+    }
+    nav a { color: var(--white); text-decoration: none; padding: 8px 18px; border-radius: 50px; font-size: 14px; font-weight: 500; transition: all 0.3s; }
+    nav a:hover, nav a.active { background: rgba(255,255,255,0.9); color: var(--deep-blue); }
+    .page-header {
+      padding-top: 120px; padding-bottom: 60px; text-align: center; color: var(--white);
+      position: relative; z-index: 1;
+    }
+    .page-header h1 { font-family: 'Noto Serif TC', serif; font-size: clamp(36px,6vw,56px); margin-bottom: 12px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .page-header p { font-size: 16px; opacity: 0.85; letter-spacing: 2px; }
+    .content { background: var(--sand-white); padding: 60px 20px 80px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .spots-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); gap: 28px; }
+    .spot-card {
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); border-radius: 24px;
+      overflow: hidden; border: 1px solid rgba(255,255,255,0.9); box-shadow: 0 8px 32px rgba(0,95,138,0.1);
+      transition: transform 0.3s; position: relative;
+    }
+    .spot-card:hover { transform: translateY(-6px); }
+    .spot-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px;
+      background: linear-gradient(90deg,var(--sky-blue),var(--ocean-blue),var(--deep-blue)); border-radius: 0 0 24px 24px;
+    }
+    .spot-card img { width: 100%; height: 220px; object-fit: cover; }
+    .spot-card .card-body { padding: 22px; }
+    .spot-card .tag {
+      display: inline-block; background: linear-gradient(135deg,var(--sky-blue),var(--ocean-blue));
+      color: white; font-size: 11px; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; font-weight: 500;
+    }
+    .spot-card h3 { font-size: 20px; color: var(--deep-blue); margin-bottom: 8px; }
+    .spot-card .info { font-size: 13px; color: #666; margin-bottom: 12px; line-height: 1.8; }
+    .spot-card .desc { font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 14px; }
+    .spot-card .map-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--ocean-blue); text-decoration: none; font-size: 13px; font-weight: 500;
+      padding: 8px 16px; border: 1.5px solid var(--ocean-blue); border-radius: 20px; transition: all 0.3s;
+    }
+    .spot-card .map-link:hover { background: var(--ocean-blue); color: white; }
+    .footer { background: var(--deep-blue); color: rgba(255,255,255,0.7); text-align: center; padding: 28px 20px; font-size: 13px; }
+    @media(max-width:768px) {
+      nav { flex-wrap: wrap; max-width: 90vw; justify-content: center; top:14px; padding:6px 10px; }
+      nav a { padding:6px 12px; font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wave-top"></div>
+  <nav>
+    <a href="index.html">首頁</a>
+    <a href="spots.html" class="active">景點推薦</a>
+    <a href="restaurants.html">美食餐廳</a>
+    <a href="itinerary.html">行程攻略</a>
+    <a href="blog.html">遊記摘要</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>🏝️ 景點推薦</h1>
+    <p>OKINAWA SPOTS</p>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="spots-grid">
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&q=80" alt="美ら海水族館">
+          <div class="card-body">
+            <span class="tag">🐋 水族館</span>
+            <h3>美ら海水族館</h3>
+            <p class="info">📍 沖繩縣國頭郡本部町 ｜ 🕐 08:30-18:30 ｜ 🎟️ 大人¥2180</p>
+            <p class="desc">世界最大級黑潮水族箱「黑潮之海」，鯨鯊與鬼蝠魟緩緩游過頭頂的震撼，無法用言語形容。另有海豚表演與觸摸池。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/美ら海水族館" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="首里城">
+          <div class="card-body">
+            <span class="tag">🏯 世界遺產</span>
+            <h3>首里城公園</h3>
+            <p class="info">📍 沖繩縣那霸市首里 ｜ 🕐 08:30-18:00 ｜ 🎟️ 大人¥820</p>
+            <p class="desc">琉球王國時期的中心，融合中國與日本建築特色的世界文化遺產。城樓朱紅典雅，可俯瞰那霸市區全景。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/首里城公園" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80" alt="萬座毛">
+          <div class="card-body">
+            <span class="tag">🌅 自然景觀</span>
+            <h3>萬座毛</h3>
+            <p class="info">📍 沖繩縣恩納村 ｜ 🕐 全天開放 ｜ 🎟️ 免費</p>
+            <p class="desc">象鼻岩是沖繩最具代表性的自然景觀，懸崖面向一片蔚藍。夕陽時分金光燦爛，是拍攝剪影的絕佳地點。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/萬座毛" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=800&q=80" alt="古宇利島">
+          <div class="card-body">
+            <span class="tag">🌉 浪漫島嶼</span>
+            <h3>古宇利島</h3>
+            <p class="info">📍 沖繩縣古宇利島 ｜ 🕐 全天開放 ｜ 🎟️ 免費（跨海大橋）</p>
+            <p class="desc">被譽為「琉球最美海灘」的戀人聖地，清澈見底的漸層藍色海水，連接島嶼的的古宇利大橋更是拍照熱點。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/古宇利島" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80" alt="玉泉洞">
+          <div class="card-body">
+            <span class="tag">🕳️ 鐘乳石洞</span>
+            <h3>玉泉洞王国</h3>
+            <p class="info">📍 沖繩縣南城市 ｜ 🕐 09:00-18:00 ｜ 🎟️ 大人¥1650</p>
+            <p class="desc">沖繩最大鐘乳石洞，全長5公里的壯觀地下洞窟。還可體驗製作琉球玻璃DIY，感受傳統工藝文化。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/玉泉洞" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80" alt="殘波岬">
+          <div class="card-body">
+            <span class="tag">🗼 白燈塔</span>
+            <h3>殘波岬公園</h3>
+            <p class="info">📍 沖繩縣讀谷村 ｜ 🕐 全天開放 ｜ 🎟️ 免費</p>
+            <p class="desc">白色燈塔佇立於斷崖之上，夕陽時分被列為「死前必看」的絕美景色。設有休息區與停車場，遊客友善。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/殘波岬" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1519155824345-14a5e4dc8b11?w=800&q=80" alt="今歸仁城跡">
+          <div class="card-body">
+            <span class="tag">🏰 世界遺產</span>
+            <h3>今歸仁城跡</h3>
+            <p class="info">📍 沖繩縣今歸仁村 ｜ 🕐 08:30-18:00 ｜ 🎟️ 大人¥400</p>
+            <p class="desc">北琉球最具規模的城跡，春季賞櫻絕景聞名。站在城牆上可俯瞰大海與群山交織的壯闘景觀。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/今歸仁城跡" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+        <div class="spot-card">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="齋場御嶽">
+          <div class="card-body">
+            <span class="tag">🙏 能量景點</span>
+            <h3>齋場御嶽</h3>
+            <p class="info">📍 沖繩縣南城市 ｜ 🕐 09:00-18:00 ｜ 🎟️ 免費（需預約）</p>
+            <p class="desc">琉球最神聖的祭祀場所，被列為世界文化遺產。傳說中琉球王國的建國神祇「三山女神」降臨之地，灵气充沛。</p>
+            <a class="map-link" href="https://www.google.com/maps/search/齋場御嶽" target="_blank">📍 查看地圖</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer"><p>沖繩旅遊攻略 v3 · 蔚藍海岸風設計 · 2026</p></footer>
+</body>
+</html>

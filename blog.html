@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>遊記摘要｜沖繩旅遊</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap');
+    :root {
+      --deep-blue: #005f8a; --ocean-blue: #0077B6; --sky-blue: #00A8E8;
+      --light-blue: #ADE8F4; --pale-blue: #CAF0F8; --sand-white: #FFF9F0;
+      --sand: #F5E6D3; --white: #ffffff; --text-dark: #1a3a4a; --coral: #FF6B6B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif; color: var(--text-dark);
+      background: linear-gradient(180deg, var(--deep-blue) 0%, var(--ocean-blue) 25%, var(--sky-blue) 50%, var(--light-blue) 80%, var(--pale-blue) 100%);
+      min-height: 100vh;
+    }
+    .wave-top {
+      position: fixed; top: 0; left: 0; width: 100%; height: 80px; z-index: 999;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80'%3E%3Cpath fill='%23FFF9F0' d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,40 1440,40 L1440,0 L0,0 Z'/%3E%3C/svg%3E") no-repeat center; background-size: cover;
+    }
+    nav {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
+      display: flex; gap: 4px; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+      border-radius: 50px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.3);
+    }
+    nav a { color: var(--white); text-decoration: none; padding: 8px 18px; border-radius: 50px; font-size: 14px; font-weight: 500; transition: all 0.3s; }
+    nav a:hover, nav a.active { background: rgba(255,255,255,0.9); color: var(--deep-blue); }
+    .page-header { padding-top: 120px; padding-bottom: 60px; text-align: center; color: var(--white); position: relative; z-index: 1; }
+    .page-header h1 { font-family: 'Noto Serif TC', serif; font-size: clamp(36px,6vw,56px); margin-bottom: 12px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .page-header p { font-size: 16px; opacity: 0.85; letter-spacing: 2px; }
+    .content { background: var(--sand-white); padding: 60px 20px 80px; }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .blog-card {
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-radius: 24px;
+      margin-bottom: 28px; overflow: hidden; border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 8px 32px rgba(0,95,138,0.08); transition: transform 0.3s; position: relative;
+    }
+    .blog-card:hover { transform: translateY(-4px); }
+    .blog-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg,var(--sky-blue),var(--ocean-blue),var(--deep-blue));
+    }
+    .blog-img { display: flex; gap: 0; }
+    .blog-img img { width: 50%; height: 220px; object-fit: cover; }
+    .blog-img img:last-child { width: 50%; }
+    .blog-body { padding: 28px 32px; }
+    .blog-meta { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .blog-tag {
+      background: linear-gradient(135deg,var(--sky-blue),var(--ocean-blue));
+      color: white; font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 500;
+    }
+    .blog-tag.coral { background: linear-gradient(135deg,var(--coral),#ff8e53); }
+    .blog-tag.green { background: linear-gradient(135deg,#2D6A4F,#52B788); }
+    .blog-card h3 { font-family: 'Noto Serif TC', serif; font-size: 22px; color: var(--deep-blue); margin-bottom: 12px; }
+    .blog-card p { font-size: 14px; color: #555; line-height: 1.9; margin-bottom: 14px; }
+    .blog-highlights { background: rgba(0,119,182,0.06); border-radius: 12px; padding: 16px 20px; margin-bottom: 14px; }
+    .blog-highlights h4 { font-size: 13px; color: var(--ocean-blue); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .blog-highlights ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+    .blog-highlights li { font-size: 13px; color: #555; background: white; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(0,119,182,0.15); }
+    .blog-source { font-size: 12px; color: var(--ocean-blue); }
+    .blog-source a { color: var(--ocean-blue); text-decoration: none; }
+
+    .summary-box {
+      background: linear-gradient(135deg, rgba(0,95,138,0.08), rgba(0,119,182,0.05));
+      border: 1.5px solid rgba(0,119,182,0.2); border-radius: 20px; padding: 28px 32px; margin-top: 40px;
+    }
+    .summary-box h3 { font-family: 'Noto Serif TC', serif; font-size: 22px; color: var(--deep-blue); margin-bottom: 20px; }
+    .summary-list { list-style: none; display: grid; gap: 14px; }
+    .summary-list li {
+      display: flex; gap: 16px; align-items: flex-start;
+      font-size: 14px; color: #555; line-height: 1.7; padding-bottom: 14px;
+      border-bottom: 1px dashed rgba(0,119,182,0.15);
+    }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-icon { font-size: 24px; min-width: 36px; text-align: center; }
+    .summary-text strong { display: block; color: var(--deep-blue); margin-bottom: 2px; }
+
+    .footer { background: var(--deep-blue); color: rgba(255,255,255,0.7); text-align: center; padding: 28px 20px; font-size: 13px; }
+    @media(max-width:768px) {
+      nav { flex-wrap: wrap; max-width: 90vw; justify-content: center; top:14px; padding:6px 10px; }
+      nav a { padding:6px 12px; font-size:12px; }
+      .blog-img { flex-direction: column; }
+      .blog-img img { width: 100%; height: 180px; }
+      .blog-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wave-top"></div>
+  <nav>
+    <a href="index.html">首頁</a>
+    <a href="spots.html">景點推薦</a>
+    <a href="restaurants.html">美食餐廳</a>
+    <a href="itinerary.html">行程攻略</a>
+    <a href="blog.html" class="active">遊記摘要</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>✍️ 遊記摘要</h1>
+    <p>BLOG SUMMARIES & TRAVEL NOTES</p>
+  </div>
+
+  <div class="content">
+    <div class="container">
+
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80" alt="沖繩全景">
+          <img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&q=80" alt="水族館">
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">2026年4月更新</span>
+            <span class="blog-tag coral">🔥 熱門攻略</span>
+          </div>
+          <h3>2026沖繩自由行攻略｜行程、交通、住宿、景點、美食、花費總整理</h3>
+          <div class="blog-highlights">
+            <h4>📌 重點摘要</h4>
+            <ul>
+              <li>瀨長島 · 波上宮 · 首里城 · 水族館 · 古宇利島</li>
+              <li>傑克牛排 · 幸福鬆餅 · 燒肉本部牧場</li>
+              <li>5天4夜約25,000台幣 · 租車1天約1,000~1,500台幣</li>
+            </ul>
+          </div>
+          <p>完整攻略涵蓋沖繩本島熱門景點、交通攻略、住宿推薦與美食名單。右駕半天可適應，市區靠單軌+計程車即可。</p>
+          <p class="blog-source">📎 來源：<a href="https://baygolee.com/oka-pedia/" target="_blank">baygolee.com/oka-pedia</a> · 2026年4月更新</p>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80" alt="海景">
+          <img src="https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=800&q=80" alt="古宇利島">
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">春季限定</span>
+            <span class="blog-tag green">🌸 賞鯨季</span>
+          </div>
+          <h3>【2026沖繩自由行】行程、景點、交通、美食、住宿，一篇搞定！</h3>
+          <div class="blog-highlights">
+            <h4>📌 重點摘要</h4>
+            <ul>
+              <li>春季（3~5月）海灘陸續開放、遊客較少</li>
+              <li>琉球海炎祭 — 全日本最早煙火</li>
+              <li>秋季最推薦（天氣涼爽）· 冬季淡季最省錢</li>
+            </ul>
+          </div>
+          <p>強調春季是冲绳最适合旅游的季节之一，海滩陆续开放且游客较少，琉球海炎祭是全日本最早的大型烟火活动。</p>
+          <p class="blog-source">📎 來源：<a href="https://vivianexplore.tw/okinawa-travel/" target="_blank">vivianexplore.tw/okinawa-travel</a> · 2026年4月更新</p>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="首里城">
+          <img src="https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80" alt="沙灘">
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">實用技巧</span>
+            <span class="blog-tag coral">⚠️ 必讀</span>
+          </div>
+          <h3>沖繩自由行2026》三天兩夜/四天三夜/自駕攻略/親子景點</h3>
+          <div class="blog-highlights">
+            <h4>📌 重點摘要</h4>
+            <ul>
+              <li>自駕vs不自駕兩套5天4夜行程建議</li>
+              <li>3~5月天氣最宜人，7~8月需防颱風</li>
+              <li>不自駕推薦包車服務</li>
+            </ul>
+          </div>
+          <p>提供自駕與非自駕兩套完整行程建議。不自駕建議住那霸市區；自駕可每天更換住宿更有彈性。</p>
+          <p class="blog-source">📎 來源：<a href="https://www.kkday.com/zh-tw/blog/38327/asia-japan-okinawa-guide" target="_blank">kkday.com 沖繩攻略</a> · 2026年4月更新</p>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80" alt="洞窟">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="城跡">
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">Threads攻略</span>
+            <span class="blog-tag">2026年4月</span>
+          </div>
+          <h3>沖繩自由行4月旅遊注意事項（Threads 短攻略）</h3>
+          <div class="blog-highlights">
+            <h4>📌 重點摘要</h4>
+            <ul>
+              <li>租車是唯一首選，機場取車預留2小時</li>
+              <li>美ら海水族館：提前線上買票，黑潮之海餵食秀15:00</li>
+              <li>恩納村青之洞窟潛水 · 慶良間群島賞鯨（4月最後產季）</li>
+              <li>必備App：Google Maps（輸入電話號碼最準）</li>
+            </ul>
+          </div>
+          <p>4月份冲绳旅游实用贴士，包括租车建议、美ら海水族馆线上购票提醒、赏鲸季末班车提醒，以及实用的Google Maps使用技巧。</p>
+          <p class="blog-source">📎 來源：Threads @roolez553 · 2026年4月（1週前發布）</p>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h3>📋 2026年4月去沖繩重點提醒</h3>
+        <ul class="summary-list">
+          <li><span class="summary-icon">🚗</span><div class="summary-text"><strong>租車自駕</strong>是主流推薦，路況好但機場取車要預留時間</div></li>
+          <li><span class="summary-icon">🐋</span><div class="summary-text"><strong>美ら海水族館</strong>一定要提前線上購票，黑潮之海餵食秀15:00</div></li>
+          <li><span class="summary-icon">🐋</span><div class="summary-text"><strong>4月賞鯨</strong>是最後產季，錯過等明年，慶良間群島賞鯨需提前預約</div></li>
+          <li><span class="summary-icon">🌸</span><div class="summary-text"><strong>春季（3~5月）</strong>遊客少、天氣涼爽，是CP值最高的季節</div></li>
+          <li><span class="summary-icon">💰</span><div class="summary-text"><strong>旅費參考：</strong>5天4夜約25,000台幣，租車1天約1,000~1,500台幣</div></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer"><p>沖繩旅遊攻略 v3 · 蔚藍海岸風設計 · 2026</p></footer>
+</body>
+</html>
